@@ -94,6 +94,16 @@ const createProjectDisplayElem = (project) => {
 
         // TODO: CHANGE BUTTON CHECKED OR UNCHECKED DEPENDENT ON 'task' PARAM
         const statusButton = document.createElement('button');
+        const statusImg = document.createElement('img');
+        if(task.checked) {
+            statusImg.src = projectDisplayConfig.checkedButton.src;
+            statusImg.alt = projectDisplayConfig.checkedButton.alt;
+        }else{
+            statusImg.src = projectDisplayConfig.uncheckedButton.src;
+            statusImg.alt = projectDisplayConfig.uncheckedButton.alt;
+        }
+        statusButton.appendChild(statusImg);
+        
         statusButton.classList.add('status-button');
         leftSide.appendChild(statusButton);
 
@@ -117,10 +127,12 @@ const createProjectDisplayElem = (project) => {
         dateButton.textContent = task.dueDate;
         rightSide.appendChild(dateButton);
 
-        const delButton = document.createElement('img');
+        const delButton = document.createElement('button');
         delButton.classList.add('del-icon');
-        delButton.src = projectDisplayConfig.deleteButton.src;
-        delButton.alt = projectDisplayConfig.deleteButton.alt;
+        const delImg = document.createElement('img');
+        delImg.src = projectDisplayConfig.deleteButton.src;
+        delImg.alt = projectDisplayConfig.deleteButton.alt;
+        delButton.appendChild(delImg);
         rightSide.appendChild(delButton);
         
         itemElem.appendChild(rightSide);
