@@ -1,7 +1,7 @@
 
 :root {
     --font-size: 20px;
-    --main-color: #e36b93;
+    --main-color: black;
 }
 
 body {
@@ -21,50 +21,55 @@ button {
 }
 
 .content {
-    min-height: 100%;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
 
     display: grid;
-    grid-template-columns: 100%;
+    grid-template-columns: 1fr 5fr;
     grid-template-rows: auto 1fr auto;
 
     grid-template-areas: 
-        "header"
-        "main-content"
-        "footer";
+        "header header"
+        "sidebar displayed-content"
+        "footer footer";
 }
+
+
 
 .header {
     grid-area: header;
     padding: 15px;
+    color: white;
 
     background-color: var(--main-color);
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-
-.main-content {
-    grid-area: main-content;
-
-    display: grid;
-    grid-template-columns: auto 1fr;
-
-    grid-template-areas:
-        "sidebar displayed-content";
+.header img {
+    height: 48px;
+    width: 48px;
 }
+
 
 
 .sidebar {
     grid-area: sidebar;
     border-right: solid;
-    border-bottom: solid;
     border-color: var(--main-color);
     padding: 10px;
 
+    justify-self: stretch;
+
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     gap: 15px;
+}
+
+.sidebar-container {
+    padding-left: 25px;
 }
 
 .sidebar-item {
@@ -85,7 +90,9 @@ button {
 
 .displayed-content {
     grid-area: displayed-content;
-    padding: 15px;
+    padding-top: 50px;
+    padding-left: 200px;
+    padding-right: 200px;
 }
 
 .project-display-list {
@@ -115,6 +122,9 @@ button {
 
 .footer {
     grid-area: footer;
+
+    background: var(--main-color);
+    color: white;
 
     display: flex;
     justify-content: center;

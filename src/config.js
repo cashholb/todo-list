@@ -5,6 +5,7 @@ import weekIcon from "./assets/icons/date_range_FILL0_wght400_GRAD0_opsz24.png"
 import projectIcon from "./assets/icons/checklist_FILL0_wght400_GRAD0_opsz24.png"
 import deleteIcon from "./assets/icons/delete_FILL0_wght400_GRAD0_opsz24.png"
 import addIcon from "./assets/icons/add_FILL0_wght400_GRAD0_opsz24.png"
+import logoIcon from "./assets/icons/output-onlinepngtools.png"
 
 const applicationName = 'Todo List App';
 
@@ -18,7 +19,7 @@ const sideBarItem = (itemTitle, icon) => (
 
 const header = {
     appName: applicationName,
-    icon: icon('', ''),
+    icon: icon(logoIcon, 'logo icon'),
 };
 
 const defaultSidebar = {

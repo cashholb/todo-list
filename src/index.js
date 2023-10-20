@@ -10,7 +10,10 @@ const CONTENT_ELEM = document.createElement('div');
 CONTENT_ELEM.classList.add('content');
 document.querySelector('body').appendChild(CONTENT_ELEM);
 
-// try to load local storage (if it exists)
+
+// -------------------------
+// TRY TO LOAD LOCAL STORAGE
+// -------------------------
 
 // temp project storage
 
@@ -34,6 +37,10 @@ const projectB = project('Touch Grass');
 
 const projects = [projectA, projectB];
 
+
+// ---------------------------------
+// DO THE DOM STUFF
+// ---------------------------------
 const updateProjectSideBar = (projectList) => {
     let projectSideBarList = [];
     projectList.forEach((project) => projectSideBarList.push(sideBarItem(project.title, projectsSidebar.icon)));
@@ -47,15 +54,8 @@ const updateProjectDisplay = (project) => {
     createProjectDisplayElem(projectA);
 }
 
-// call all content from content.js and append it to CONTENT_ELEM of DOM
 CONTENT_ELEM.appendChild(createHeaderElem());
-
-
-const mainContent = document.createElement('div');
-mainContent.classList.add('main-content');
-mainContent.appendChild(createSidebarElem(projectsSidebar));
-mainContent.appendChild(createProjectDisplayElem(projectA));
-CONTENT_ELEM.appendChild(mainContent);
-
+CONTENT_ELEM.appendChild(createSidebarElem(projectsSidebar));
+CONTENT_ELEM.appendChild(createProjectDisplayElem(projectA));
 CONTENT_ELEM.appendChild(createFooterElem());
 
