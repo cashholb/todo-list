@@ -1,4 +1,3 @@
-import { project } from "./project";
 import inboxIcon from "./assets/icons/inbox_FILL0_wght400_GRAD0_opsz24.svg"
 import todayIcon from "./assets/icons/today_FILL0_wght400_GRAD0_opsz24.svg"
 import weekIcon from "./assets/icons/date_range_FILL0_wght400_GRAD0_opsz24.svg"
@@ -26,17 +25,17 @@ const header = {
 };
 
 const defaultSidebar = {
-    items: [
+    defaultProjects: [
         {
-            itemTitle: 'Inbox',
+            title: 'Inbox',
             icon: icon(inboxIcon, 'Inbox Icon'),
         },
         {
-            itemTitle: 'Today',
+            title: 'Today',
             icon: icon(todayIcon, 'Today Icon'),
         },
         {
-            itemTitle: 'This Week',
+            title: 'This Week',
             icon: icon(weekIcon, 'This week icon'),
         },
     ],
@@ -48,8 +47,8 @@ const projectsSidebar = {
     items: [
     ],
     addButton: {
+        title: 'Add Project',
         icon: icon(addIcon, 'add project icon'),
-        itemTitle: 'Add Project',
     }
 };
 

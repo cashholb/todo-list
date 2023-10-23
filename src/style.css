@@ -25,13 +25,13 @@ button {
     width: 100vw;
 
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: 1fr;
     grid-template-rows: auto 1fr auto;
 
     grid-template-areas: 
-        "header header"
-        "sidebar displayed-content"
-        "footer footer";
+        "header"
+        "main-content"
+        "footer";
 }
 
 
@@ -55,12 +55,17 @@ button {
 }
 
 
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-areas: "sidebar displayed-content";
+}
 
 .sidebar {
     grid-area: sidebar;
-    border-right: solid;
-    border-color: var(--main-color);
     padding: 10px;
+
+    background-color: rgb(199, 199, 199);
 
     justify-self: stretch;
 
@@ -106,6 +111,7 @@ button {
 .displayed-task {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     .left,
     .right {

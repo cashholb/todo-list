@@ -1,5 +1,6 @@
-import {header, defaultSidebar, projectDisplayConfig, footer} from './config.js';
-import { project } from './project.js';
+import format from 'date-fns/format'
+
+import {header, defaultSidebar, projectsSidebar, projectDisplayConfig, footer} from './config.js';
 
 // header
 const createHeaderElem = () => {
@@ -19,40 +20,41 @@ const createHeaderElem = () => {
 };
 
 // sidebar
-const createSidebarElem = (currProjectsSidebar) => {
+const createSidebarElem = (projectsList) => {
 
     const sidebarElem = document.createElement('div');
     sidebarElem.classList.add('sidebar');
 
-    const createSidebarButtonsListElem = (itemsList) => {
 
-        const containerElem =  document.createElement('div');
-        containerElem.classList.add('sidebar-items-list');
+    // DEFAULT PROJECT
 
-        itemsList.forEach((item) => {
-            const sidebarItem = document.createElement('button');
-            sidebarItem.classList.add('sidebar-item');
-    
-            const icon = document.createElement('img');
-            icon.src = item.icon.src;
-            icon.alt = item.icon.alt;
-            sidebarItem.appendChild(icon);
-    
-            const itemTitle = document.createElement('p');
-            itemTitle.textContent = item.itemTitle;
-            sidebarItem.appendChild(itemTitle);
-    
-            containerElem.appendChild(sidebarItem);
-        });
-            
-        return containerElem;
+    const createSidebarItemElem = (title, iconSrc, iconAlt) => {
+        const sidebarItem = document.createElement('button');
+        sidebarItem.classList.add('sidebar-item');
+
+        const icon = document.createElement('img');
+        icon.src = iconSrc;
+        icon.alt = iconAlt;
+        sidebarItem.appendChild(icon);
+
+        const itemTitle = document.createElement('p');
+        itemTitle.textContent = title;
+        sidebarItem.appendChild(itemTitle);
+
+        return sidebarItem
     }
+
+    
 
     // default items (Inbox, Today, etc.)
     const defaultSidebarContainer = document.createElement('div');
     defaultSidebarContainer.classList.add('sidebar-container');
 
-    defaultSidebarContainer.appendChild(createSidebarButtonsListElem(defaultSidebar.items));
+    defaultSidebar.defaultProjects.forEach((project) => {
+        defaultSidebarContainer.appendChild(createSidebarItemElem(project.title, project.icon.src, project.icon.alt))
+    });    
+
+    //defaultSidebarContainer.appendChild(createSidebarButtonsListElem(defaultSidebar.defaultProjects));
     sidebarElem.appendChild(defaultSidebarContainer);
 
 
@@ -61,38 +63,44 @@ const createSidebarElem = (currProjectsSidebar) => {
     projectsSidebarContainer.classList.add('sidebar-container');
 
     const projectTitle = document.createElement('h2');
-    projectTitle.textContent = currProjectsSidebar.title;
+    projectTitle.textContent = projectsSidebar.title;
     projectsSidebarContainer.appendChild(projectTitle);
 
-    const projectsSidebarItems = document.createElement('div');
+    projectsList.forEach((projectTitle) => {
+        projectsSidebarContainer.appendChild(createSidebarItemElem(projectTitle, projectsSidebar.icon.src, projectsSidebar.icon.alt));
+    })
 
-    projectsSidebarContainer.appendChild(createSidebarButtonsListElem(currProjectsSidebar.items));
+    //projectsSidebarContainer.appendChild(createSidebarButtonsListElem(projectsList));
+
+    // add project button
+    const addProjectElem = createSidebarItemElem(projectsSidebar.addButton.title, projectsSidebar.addButton.icon.src, projectsSidebar.addButton.icon.alt);
+    projectsSidebarContainer.appendChild(addProjectElem);
     sidebarElem.appendChild(projectsSidebarContainer);
+
 
     return sidebarElem;
 };
 
 // project display content
-const createProjectDisplayElem = (project) => {
+const createProjectDisplayElem = (projectTitle, taskList) => {
     const projectDisplayElem = document.createElement('div');
     projectDisplayElem.classList.add('displayed-content');
 
     const header = document.createElement('h1');
-    header.textContent = project.title;
+    header.textContent = projectTitle;
     projectDisplayElem.appendChild(header);
 
     const projectDisplayList = document.createElement('div');
     projectDisplayList.classList.add('project-display-list');
 
     // create displayed task item
-    for (const task of project.projectToDoList) {
+    for (const task of taskList) {
         const itemElem = document.createElement('div');
         itemElem.classList.add('displayed-task');
 
         const leftSide = document.createElement('div');
         leftSide.classList.add('left');
 
-        // TODO: CHANGE BUTTON CHECKED OR UNCHECKED DEPENDENT ON 'task' PARAM
         const statusButton = document.createElement('button');
         const statusImg = document.createElement('img');
         if(task.checked) {
@@ -124,7 +132,7 @@ const createProjectDisplayElem = (project) => {
 
         const dateButton = document.createElement('button');
         dateButton.classList.add('date-button');
-        dateButton.textContent = task.dueDate;
+        dateButton.textContent = format(task.date, 'dd-MM-yyyy');
         rightSide.appendChild(dateButton);
 
         const delButton = document.createElement('button');
@@ -139,6 +147,8 @@ const createProjectDisplayElem = (project) => {
 
         projectDisplayList.appendChild(itemElem);
     }
+
+
 
     projectDisplayElem.appendChild(projectDisplayList);
 
