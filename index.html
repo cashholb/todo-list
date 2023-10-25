@@ -7,5 +7,38 @@
     <script src="main.js" defer></script>
 </head>
 <body>
+    <dialog data-modal>
+        <form action="" method="">
+
+            <h1 class="form-title">Create New / Edit Existing Task</h1>
+    
+            <div class="input">
+                <label for="task-name">Task Name</label>
+                <input id="task-name" name="name" type="text" value="" size="10" maxlength="15" required>
+            </div>
+            <div class="input">
+                <label for="task-description">Task Description</label>
+                <input id="task-description" name="description" type="text" value="" size="50" maxlength="500">
+            </div>
+    
+            <label for="due-date">Due Date:</label>
+            <input id="due-date" name="due-date" type="date"  required>
+    
+            <label class="checkbox">Urgent?
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+            
+            <div class="input">
+                <label for="project">Choose a project</label>
+                <select id="project" name="project">
+                    <option value="Inbox">Inbox</option>
+                </select>
+            </div>
+            
+    
+            <button type="submit">Submit</button>
+        </form>
+    </dialog>
 </body>
 </html>
