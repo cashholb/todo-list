@@ -3,11 +3,12 @@ import todayIcon from "./assets/icons/today_FILL0_wght400_GRAD0_opsz24.svg"
 import weekIcon from "./assets/icons/date_range_FILL0_wght400_GRAD0_opsz24.svg"
 import projectIcon from "./assets/icons/checklist_FILL0_wght400_GRAD0_opsz24.svg"
 import deleteIcon from "./assets/icons/delete_FILL0_wght400_GRAD0_opsz24.svg"
-import addIcon from "./assets/icons/add_FILL0_wght400_GRAD0_opsz24.svg"
 import logoIcon from "./assets/icons/done_all_FILL0_wght400_GRAD0_opsz24.svg"
+import addIcon from "./assets/icons/add_FILL0_wght400_GRAD0_opsz24.svg"
 import uncheckedButton from "./assets/icons/radio_button_unchecked_FILL0_wght400_GRAD0_opsz24.svg"
 import checkedButton from "./assets/icons/check_circle_FILL0_wght400_GRAD0_opsz24.svg"
 import githubLogo from "./assets/icons/github-mark-white.svg"
+import closeIcon from "./assets/icons/close_FILL0_wght400_GRAD0_opsz24.svg"
 
 const applicationName = 'Todo List App';
 
@@ -46,10 +47,11 @@ const projectsSidebar = {
     icon: icon(projectIcon, 'Project Icon'),
     items: [
     ],
-    addButton: {
-        title: 'Add Project',
-        icon: icon(addIcon, 'add project icon'),
-    }
+    addProjectItem: {
+        title: "Add Project",
+        icon: icon(addIcon, 'add new item'),
+    },
+    delButton: icon(closeIcon, 'delete project'),
 };
 
 const projectDisplayConfig = {

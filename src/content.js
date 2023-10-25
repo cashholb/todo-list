@@ -26,6 +26,7 @@ const createSidebarElem = (projectsList) => {
     sidebarElem.classList.add('sidebar');
 
 
+
     // DEFAULT PROJECT
 
     const createSidebarItemElem = (title, iconSrc, iconAlt) => {
@@ -51,7 +52,20 @@ const createSidebarElem = (projectsList) => {
     defaultSidebarContainer.classList.add('sidebar-container');
 
     defaultSidebar.defaultProjects.forEach((project) => {
-        defaultSidebarContainer.appendChild(createSidebarItemElem(project.title, project.icon.src, project.icon.alt))
+        const sidebarItem = document.createElement('button');
+        sidebarItem.classList.add('sidebar-item');
+        sidebarItem.id = `${project.title}-identifier`;
+
+        const icon = document.createElement('img');
+        icon.src = project.icon.src;
+        icon.alt = project.icon.alt;
+        sidebarItem.appendChild(icon);
+
+        const itemTitle = document.createElement('p');
+        itemTitle.textContent = project.title;
+        sidebarItem.appendChild(itemTitle);
+
+        defaultSidebarContainer.appendChild(sidebarItem);
     });    
 
     //defaultSidebarContainer.appendChild(createSidebarButtonsListElem(defaultSidebar.defaultProjects));
@@ -67,17 +81,70 @@ const createSidebarElem = (projectsList) => {
     projectsSidebarContainer.appendChild(projectTitle);
 
     projectsList.forEach((projectTitle) => {
-        projectsSidebarContainer.appendChild(createSidebarItemElem(projectTitle, projectsSidebar.icon.src, projectsSidebar.icon.alt));
-    })
+        const sidebarItem = document.createElement('button');
+        sidebarItem.classList.add('sidebar-item');
+        sidebarItem.id = `${projectTitle}-identifier`;
 
-    //projectsSidebarContainer.appendChild(createSidebarButtonsListElem(projectsList));
+        const icon = document.createElement('img');
+        icon.src = projectsSidebar.icon.src;
+        icon.alt = projectsSidebar.icon.alt;
+        sidebarItem.appendChild(icon);
 
-    // add project button
-    const addProjectElem = createSidebarItemElem(projectsSidebar.addButton.title, projectsSidebar.addButton.icon.src, projectsSidebar.addButton.icon.alt);
-    projectsSidebarContainer.appendChild(addProjectElem);
+        const itemTitle = document.createElement('p');
+        itemTitle.textContent = projectTitle;
+        sidebarItem.appendChild(itemTitle);
+
+        const deleteItem = document.createElement('button');
+        deleteItem.classList.add('delete-project');
+        deleteItem.id = projectTitle;
+        const deleteItemImg = document.createElement('img');
+        deleteItemImg.src = projectsSidebar.delButton.src;
+        deleteItemImg.alt = projectsSidebar.delButton.alt;
+        deleteItem.appendChild(deleteItemImg);
+        sidebarItem.appendChild(deleteItem);
+
+        projectsSidebarContainer.appendChild(sidebarItem);
+    });
+
     sidebarElem.appendChild(projectsSidebarContainer);
 
+    // add project add button
+    const addProjectContainer = document.createElement('div');
+    addProjectContainer.classList.add('sidebar-container');
+    addProjectContainer.classList.add('add-project-sidebar-container');
 
+
+    const addProjectItem = document.createElement('button');
+    addProjectItem.classList.add('sidebar-item');
+    addProjectItem.classList.add('add-project-default');
+
+    const icon = document.createElement('img');
+    icon.src = projectsSidebar.addProjectItem.icon.src;
+    icon.alt = projectsSidebar.addProjectItem.icon.alt;
+    addProjectItem.appendChild(icon);
+
+    const itemTitle = document.createElement('p');
+    itemTitle.textContent = projectsSidebar.addProjectItem.title;
+    addProjectItem.appendChild(itemTitle);
+
+    addProjectContainer.appendChild(addProjectItem);
+    addProjectContainer.appendChild(addProjectElem());
+
+    sidebarElem.appendChild(addProjectContainer);
+
+
+
+    // add plus button
+    /*const addButton = document.createElement('button');
+    addButton.classList.add('add-item-btn');
+    addButton.setAttribute('data-open-modal', '');
+    const addButtonImg = document.createElement('img');
+    addButtonImg.src = projectsSidebar.addButton.src;
+    addButtonImg.alt = projectsSidebar.addButton.alt;
+    addButton.appendChild(addButtonImg);
+    sidebarContentContainer.appendChild(addButton);*/
+
+    
     return sidebarElem;
 };
 
@@ -177,5 +244,38 @@ const createFooterElem = () => {
 
     return footerElem;
 };
+
+const addProjectElem = () => {
+    const addProjectElem = document.createElement('div');
+    addProjectElem.classList.add('add-project-popup');
+
+    const textBox = document.createElement('input');
+    textBox.classList.add('text');
+    textBox.type = 'text';
+    textBox.id = 'project-popup-input';
+    addProjectElem.appendChild(textBox);
+
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('project-popup-button-container');
+    
+    const addButton = document.createElement('button');
+    addButton.classList.add('input-button');
+    addButton.classList.add('add-button');
+    addButton.textContent = 'Add';
+    addButton.id = 'project-popup-add-button'
+    buttonContainer.appendChild(addButton);
+
+    const cancelButton = document.createElement('button');
+    cancelButton.classList.add('input-button');
+    cancelButton.classList.add('cancel-button');
+    cancelButton.id = 'project-popup-cancel-button'
+    cancelButton.textContent = 'Cancel';
+    buttonContainer.appendChild(cancelButton);
+
+    addProjectElem.appendChild(buttonContainer);
+
+    return addProjectElem;
+}
 
 export {createHeaderElem, createSidebarElem, createProjectDisplayElem, createFooterElem};

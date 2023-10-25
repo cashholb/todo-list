@@ -1,7 +1,7 @@
 
 :root {
     --font-size: 20px;
-    --main-color: black;
+    --main-color: rgb(51, 51, 51);
 }
 
 body {
@@ -57,15 +57,20 @@ button {
 
 .main-content {
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 1fr 5fr;
     grid-template-areas: "sidebar displayed-content";
 }
 
 .sidebar {
-    grid-area: sidebar;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 15px;
 
-    background-color: rgb(199, 199, 199);
+    background-color: rgb(216, 216, 216);
+
+    grid-area: sidebar;
+    padding: 20px;
 
     justify-self: stretch;
 
@@ -75,22 +80,110 @@ button {
     gap: 18px;
 }
 
+
 .sidebar-container {
-    padding-left: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
+
 
 .sidebar-item {
+    padding: 0px 15px;
+    width: 100%;
     align-self: center;
 
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
     align-items: center;
     gap: 10px;
-
 }
 
-.sidebar-item img {
+.sidebar-item.active,
+.sidebar-item:hover{
+    font-weight: 600;
+    background-color: rgb(173, 173, 173);
+    border-radius: 5px; 
+}
+
+.sidebar-item:hover {
+    > .delete-project {
+        visibility: visible;
+    }
+}
+
+.sidebar-item img,
+.delete-project img  {
     height: 25px;
     width: 25px;
+}
+
+.add-item-btn {
+    align-self: flex-start;
+    justify-self: end;
+}
+
+.add-item-btn img{
+    position: relative;
+
+    filter: brightness(0.7);
+
+    height: 10vh;
+    width: 10vw;
+}
+
+.delete-project {
+    visibility: hidden;
+    justify-self: flex-end;
+}
+
+.delete-project {
+    padding-top: 3px;
+}
+
+.add-project-popup {
+    visibility: hidden;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+
+    > .text {
+        border-radius: 5px;
+        border: 1px solid rgb(173, 173, 173);
+        margin-bottom: 10px;
+        border-inline: none;
+    }
+
+    > .project-popup-button-container{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        text-align: center;
+
+        > .input-button{
+            width: 100%;
+            border: 0.5px solid rgb(173, 173, 173);
+            border-radius: 5px;
+            padding: 10px 25px;
+            font-size: 1.2rem;
+        }
+
+        > .add-button {
+            background-color: rgb(149, 223, 149);
+        }
+
+        > .cancel-button {
+            background-color: rgb(250, 170, 170);
+
+        }
+    }
+}
+
+.add-project-default.active {
+    display: none;
+}
+
+.add-project-popup.active {
+    visibility: visible;
 }
 
 
@@ -100,6 +193,7 @@ button {
     padding-top: 50px;
     padding-left: 200px;
     padding-right: 200px;
+    background-color: rgb(245, 245, 245);
 }
 
 .project-display-list {
