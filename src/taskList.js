@@ -19,7 +19,8 @@ const TaskList = () => {
     const findTask = (taskTitle) => {
 
         for(const task of tasks) {
-            if(task.title === taskTitle) {
+            if(task.title == taskTitle) {
+                console.log(task.title, taskTitle);
                 return task;
             }
         }

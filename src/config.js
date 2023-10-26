@@ -11,8 +11,7 @@ import githubLogo from "./assets/icons/github-mark-white.svg"
 import closeIcon from "./assets/icons/close_FILL0_wght400_GRAD0_opsz24.svg"
 import starIcon from "./assets/icons/star_FILL0_wght400_GRAD0_opsz24.svg"
 import starIconFilled from "./assets/icons/star-fill.svg"
-
-const applicationName = 'Todo List App';
+import menuIcon from "./assets/icons/menu_FILL0_wght400_GRAD0_opsz24.svg"
 
 const icon = (src, alt) => (
      {src: src, alt: alt}
@@ -23,8 +22,9 @@ const sideBarItem = (itemTitle, icon) => (
 ); 
 
 const header = {
-    appName: applicationName,
+    appName: 'TodoToday',
     icon: icon(logoIcon, 'logo icon'),
+    menuIcon: icon(menuIcon, 'menu drop down button'),
 };
 
 const defaultSidebar = {
@@ -75,4 +75,4 @@ const footer = {
     githubLink: 'https://github.com/cashholb/todo-list',
 };
 
-export {applicationName, header, defaultSidebar, projectDisplayConfig, projectsSidebar, sideBarItem, icon, footer};
+export {header, defaultSidebar, projectDisplayConfig, projectsSidebar, sideBarItem, icon, footer};

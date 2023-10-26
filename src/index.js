@@ -9,7 +9,6 @@ import {loadLocalStorage, setTaskListInLocalStorage} from './localStorage';
 
 const MAX_DATE = new Date(8640000000000000);
 
-
 // create app container
 const CONTENT_ELEM = document.createElement('div');
 CONTENT_ELEM.classList.add('content');
@@ -117,7 +116,10 @@ const createEventListeners = () => {
     document.getElementById('add-task').addEventListener('click', (e) => {
         modal.showModal();
     });
+    
 }
+
+
 
 // ---------------------------------
 // DO THE DOM STUFF
@@ -133,7 +135,6 @@ const displayProject = (mainContentContainer, projectTitle) => {
         if (!projectsList.includes(projectTitle) ){
             projectsList.push(projectTitle);
             projectsList.sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}));
-            console.log(projectsList);
          }
          //  sidebar
          mainContentContainer.appendChild(createSidebarElem(projectsList.filter((projectTitle) => projectTitle != 'Inbox')));
@@ -172,17 +173,27 @@ CONTENT_ELEM.appendChild(createFooterElem());
 // FORM LOGIC
 // ----------
 
-document.getElementById('task-name').addEventListener("input", (e) => {
-    if(taskList.findTask(e.target.value) != "")
-    {
-        e.target.setCustomValidity(`Cannot create duplicate task '${e.target.value}'`);
-    }
-});
+const validateTaskName = (taskName) => {
+    const inputField = document.getElementById('task-name');
 
-document.querySelector('form').addEventListener('submit', (e) => {
+    if(taskList.findTask(taskName) != "")
+    {
+        alert(`Cannot create duplicate task '${taskName}'`);
+        return false;
+    }
+    return true;
+}
+
+const formEventFunc = (e) => {
+
     e.preventDefault();
 
+    // check if valid task-name
     const taskName = document.getElementById('task-name').value;
+    if(!validateTaskName(taskName)) {
+        return;
+    }
+
     const taskDesc = document.getElementById('task-description').value;
     let date = document.getElementById('due-date').value;
 
@@ -204,4 +215,45 @@ document.querySelector('form').addEventListener('submit', (e) => {
     document.querySelector('form').reset();
     modal.close();
     displayProject(mainContentElem, activeProject);
+}
+
+document.querySelector('form').addEventListener('submit', (e) => formEventFunc(e));
+
+// ------------
+// media queries
+// ------------
+
+const MOBILE_WIDTH = 800;
+
+let mobileSize = window.matchMedia(`(max-width: ${MOBILE_WIDTH}px)`);
+
+const removeSidebar = () => {
+    if(document.contains(document.querySelector('.sidebar'))) {
+        document.querySelector('.main-content').removeChild(document.querySelector('.sidebar'));
+    }
+}
+
+const windowResizeFunc = () => {
+    if(window.innerWidth <= MOBILE_WIDTH) {
+        removeSidebar();
+    }else{
+        displayProject(mainContentElem, document.querySelector('.displayed-content').querySelector('h1').textContent);
+    }
+}
+
+windowResizeFunc();
+
+window.addEventListener('resize', () => {
+    windowResizeFunc();
+})
+
+
+document.querySelector('.menu-icon').addEventListener('click', (e) => {
+    if(e.target.classList.contains('active')) {
+        document.querySelector('.main-content').removeChild(document.querySelector('.main-content').firstElementChild);
+        e.target.classList.remove('active');
+    }else {
+        document.querySelector('.main-content').insertBefore(createSidebarElem(projectsList), document.querySelector('.displayed-content'));
+        e.target.classList.add('active');
+    }
 });

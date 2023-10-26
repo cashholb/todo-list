@@ -10,14 +10,31 @@ const createHeaderElem = () => {
     const headerElem = document.createElement('div');
     headerElem.classList.add('header');
 
+    const leftSide = document.createElement('div');
+    leftSide.classList.add('left');
+
     const iconElem = document.createElement('img');
     iconElem.src = header.icon.src;
     iconElem.alt = header.icon.alt;
-    headerElem.appendChild(iconElem);
+    leftSide.appendChild(iconElem);
 
     const titleElem = document.createElement('h1');
     titleElem.textContent = header.appName;
-    headerElem.appendChild(titleElem);
+    leftSide.appendChild(titleElem);
+
+    headerElem.appendChild(leftSide);
+
+    const rightSide = document.createElement('div');
+
+    const menuIcon = document.createElement('button');
+    menuIcon.classList.add('menu-icon');
+    const menuIconImg = document.createElement('img');
+    menuIconImg.src = header.menuIcon.src;
+    menuIconImg.alt = header.menuIcon.alt;
+    menuIcon.appendChild(menuIconImg);
+    rightSide.appendChild(menuIcon);
+    
+    headerElem.appendChild(rightSide);
 
     return headerElem;
 };
@@ -27,6 +44,7 @@ const createSidebarElem = (projectsList) => {
 
     const sidebarElem = document.createElement('div');
     sidebarElem.classList.add('sidebar');
+    sidebarElem.classList.add('active');
     
 
     // default items (Inbox, Today, etc.)
