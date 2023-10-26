@@ -4,6 +4,7 @@
   "description": "A todo list application in JS/HTML/JS with local storage",
   "main": "index.js",
   "scripts": {
+    "push-pages": "git subtree push --prefix dist origin gh-pages",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch",
     "build": "webpack"

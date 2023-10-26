@@ -47,13 +47,16 @@ const loadLocalStorage = () => {
     let taskList = TaskList();
 
     const loadedTaskList = JSON.parse(localStorage.getItem('taskList'));
-    loadedTaskList.forEach((task) => {
-        const loadedTask = Task(task.title, task.description, new Date(task.date), task.priority, task.checked);
-        task.projects.forEach((project) => {
-            loadedTask.addProject(project);
-        })
-        taskList.addTask(loadedTask);
-    });
+    if(loadedTaskList) {
+        loadedTaskList.forEach((task) => {
+            const loadedTask = Task(task.title, task.description, new Date(task.date), task.priority, task.checked);
+            task.projects.forEach((project) => {
+                loadedTask.addProject(project);
+            })
+            taskList.addTask(loadedTask);
+        });
+    }
+    
 
     console.log(taskList.getTasks());
     return taskList;
