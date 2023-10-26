@@ -10,6 +10,8 @@ import { createHeaderElem, createSidebarElem, createProjectDisplayElem, createFo
 import { demoProjectList, addProject, addTask } from './localStorage';
 import { createProjectList } from './projectList';
 
+const MAX_DATE = new Date(8640000000000000);
+
 
 // create app container
 const CONTENT_ELEM = document.createElement('div');
@@ -200,12 +202,26 @@ CONTENT_ELEM.appendChild(createFooterElem());
 // FORM LOGIC
 // ----------
 
+document.getElementById('task-name').addEventListener("input", (e) => {
+    if(taskList.findTask(e.target.value) != "")
+    {
+        e.target.setCustomValidity(`Cannot create duplicate task '${e.target.value}'`);
+    }
+});
+
 document.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault();
 
     const taskName = document.getElementById('task-name').value;
     const taskDesc = document.getElementById('task-description').value;
-    const date = new Date(document.getElementById('due-date').value);
+    let date = document.getElementById('due-date').value;
+
+    if(date == ""){
+        date = new Date(MAX_DATE);
+    }else{
+        date = new Date(date);
+    }
+    
     const checkbox = document.getElementById('checkbox').checked;
     
     const activeProject = document.querySelector('.displayed-content').querySelector('h1').textContent;

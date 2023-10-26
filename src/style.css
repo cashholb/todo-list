@@ -209,10 +209,14 @@ button {
     justify-content: space-between;
     align-items: center;
 
-    .left,
-    .right {
+    .left {
         display: flex;
         gap: 15px;
+    }
+    .right {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(50px, 100px) ) ;
+        grid-template-rows: 1fr;
     }
 }
 

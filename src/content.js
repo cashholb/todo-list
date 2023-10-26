@@ -1,6 +1,9 @@
 import format from 'date-fns/format'
+import isEqual from 'date-fns/isEqual';
 
 import {header, defaultSidebar, projectsSidebar, projectDisplayConfig, footer} from './config.js';
+
+const MAX_DATE = new Date(8640000000000000);
 
 // header
 const createHeaderElem = () => {
@@ -47,7 +50,6 @@ const createSidebarElem = (projectsList) => {
         defaultSidebarContainer.appendChild(sidebarItem);
     });    
 
-    //defaultSidebarContainer.appendChild(createSidebarButtonsListElem(defaultSidebar.defaultProjects));
     sidebarElem.appendChild(defaultSidebarContainer);
 
 
@@ -111,19 +113,6 @@ const createSidebarElem = (projectsList) => {
 
     sidebarElem.appendChild(addProjectContainer);
 
-
-
-    // add plus button
-    /*const addButton = document.createElement('button');
-    addButton.classList.add('add-item-btn');
-    addButton.setAttribute('data-open-modal', '');
-    const addButtonImg = document.createElement('img');
-    addButtonImg.src = projectsSidebar.addButton.src;
-    addButtonImg.alt = projectsSidebar.addButton.alt;
-    addButton.appendChild(addButtonImg);
-    sidebarContentContainer.appendChild(addButton);*/
-
-    
     return sidebarElem;
 };
 
@@ -196,7 +185,11 @@ const createProjectDisplayElem = (projectTitle, taskList) => {
 
         const dateButton = document.createElement('button');
         dateButton.classList.add('date-button');
-        dateButton.textContent = format(task.date, 'dd-MM-yyyy');
+        if(isEqual(task.date, MAX_DATE)) {
+            dateButton.textContent = 'no date';
+        }else{
+            dateButton.textContent = format(task.date, 'dd-MM-yyyy');
+        }
         rightSide.appendChild(dateButton);
 
         const delButton = document.createElement('button');

@@ -23,7 +23,7 @@ const TaskList = () => {
                 return task;
             }
         }
-        return;
+        return "";
     }
     
     const getTasksOfProject = (projectTitle) => {
