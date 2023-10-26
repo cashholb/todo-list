@@ -1,6 +1,3 @@
-import isEqual from 'date-fns/isEqual'
-import isToday from 'date-fns/isToday'
-import isThisWeek from 'date-fns/isThisWeek'
 
 import './style.css';
 
@@ -12,13 +9,16 @@ import { defaultSidebar, projectsSidebar, icon, sideBarItem, projectDisplay} fro
 import { createHeaderElem, createSidebarElem, createProjectDisplayElem, createFooterElem} from "./content";
 import { demoProjectList, addProject, addTask } from './localStorage';
 import { createProjectList } from './projectList';
-import { el } from 'date-fns/locale';
 
 
 // create app container
 const CONTENT_ELEM = document.createElement('div');
 CONTENT_ELEM.classList.add('content');
 document.querySelector('body').appendChild(CONTENT_ELEM);
+
+// modal
+const modal = document.querySelector('[data-modal]');
+document.getElementById('cancel-add-task').addEventListener("click", () => modal.close());
 
 let taskList = TaskList();
 
@@ -27,21 +27,21 @@ taskList.addTask(Task(
     'pick up clothes',
     'use your hands, toss them in the wash',
     new Date("2023-10-30"),
-    'low',
+    true,
 ));
 
 taskList.addTask(Task(
     'organize dresser',
     'throw out junk from junk drawer',
     new Date(),
-    'medium',
+    false,
 ));
 
 taskList.addTask(Task(
     'just for inbox',
     'this is a desc',
     new Date(),
-    'low',
+    true,
 ));
 
 
@@ -63,53 +63,19 @@ const createEventListeners = () => {
             document.querySelector('.add-project-default').classList.add('active');
             document.querySelector('.add-project-popup').classList.add('active');
             
-        }else{
-            let tasksToDisplay = [];
-    
-            document.querySelectorAll('.sidebar-item').forEach((sidebarItemParam) => sidebarItemParam.classList.remove('active'));
-            statusBtn.classList.add('active');
-    
-            let updatedDisplay;
-    
-            switch(projectTitle) {
-                case 'Today': 
-                    let todayTasks = [];
-    
-                    taskList.getTasks().forEach((task) => {
-                        if(isToday(task.date)){
-                            todayTasks.push(task);
-                        }
-                    })
-                    updatedDisplay = createProjectDisplayElem(projectTitle, todayTasks);
-                    break;
-                case 'This Week':
-                    let weeklyTasks = [];
-                    taskList.getTasks().forEach((task) => {
-                        if(isThisWeek(task.date)){
-                            weeklyTasks.push(task);
-                        }
-                    })
-                    updatedDisplay = createProjectDisplayElem(projectTitle, weeklyTasks);
-                    break;
-    
-                default:
-                    updatedDisplay = createProjectDisplayElem(projectTitle, taskList.getTasksOfProject(projectTitle));
-            }
-    
-            const displayedElem = document.querySelector('.displayed-content');
-            displayedElem.innerHTML = "";
-            displayedElem.replaceWith(updatedDisplay);
+        }else{    
+            displayProject(mainContentElem, projectTitle);
         }
     }));
 
+    // popup-cancel-button
     document.getElementById('project-popup-cancel-button').addEventListener('click', () => {
         document.querySelector('.add-project-default').classList.remove('active');
         document.querySelector('.add-project-popup').classList.remove('active');
     });
 
+    // popup-add-button
     document.getElementById('project-popup-add-button').addEventListener('click', () => {
-        
-
         const textVal = document.getElementById('project-popup-input').value;
 
         // error handling
@@ -143,6 +109,43 @@ const createEventListeners = () => {
         displayProject(mainContentElem, 'Inbox');
 
     }));
+
+    // -------
+    // display
+    // -------
+
+    // status button
+    document.querySelectorAll('.status-button').forEach((taskStatus) => taskStatus.addEventListener('click', (e) => {
+        console.log(e.target.parentNode.parentNode.parentNode.id);
+
+        let task = taskList.findTask(e.target.parentNode.parentNode.parentNode.id);
+
+        task.checked = task.checked ? false : true;
+
+        displayProject(mainContentElem, document.querySelector('.displayed-content').firstChild.textContent);
+    }));
+
+    // priority button
+    document.querySelectorAll('.priority-button').forEach((priorityLevelButton) => priorityLevelButton.addEventListener('click', (e) => {
+        let task = taskList.findTask(e.target.parentNode.parentNode.parentNode.id);
+        task.priority = task.priority ? false : true;
+        displayProject(mainContentElem, document.querySelector('.displayed-content').firstChild.textContent);
+    }));
+
+    // delete task
+    document.querySelectorAll('.del-icon').forEach((taskDelIcon) => taskDelIcon.addEventListener('click', (e) => {
+        console.log(e.target.parentNode.parentNode.parentNode.id);
+        let task = taskList.findTask(e.target.parentNode.parentNode.parentNode.id);
+
+        taskList.removeTask(task);
+
+        displayProject(mainContentElem, document.querySelector('.displayed-content').firstChild.textContent);
+    }));
+
+    // open modal
+    document.getElementById('add-task').addEventListener('click', (e) => {
+        modal.showModal();
+    });
 }
 
 // ---------------------------------
@@ -152,18 +155,29 @@ const createEventListeners = () => {
 const displayProject = (mainContentContainer, projectTitle) => {
     mainContentContainer.innerHTML = "";
 
-    if (!projectsList.includes(projectTitle)){
-       projectsList.push(projectTitle);
-       projectsList.sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}));
-       console.log(projectsList);
-    }
-    //  sidebar
-    mainContentContainer.appendChild(createSidebarElem(projectsList.filter((projectTitle) => projectTitle != 'Inbox')));
+    
+    if(projectTitle != 'Today' && projectTitle != 'This Week')
+    {
+        if (!projectsList.includes(projectTitle) ){
+            projectsList.push(projectTitle);
+            projectsList.sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}));
+            console.log(projectsList);
+         }
+         //  sidebar
+         mainContentContainer.appendChild(createSidebarElem(projectsList.filter((projectTitle) => projectTitle != 'Inbox')));
 
-    //  display
-    mainContentContainer.appendChild(createProjectDisplayElem(projectTitle, taskList.getTasksOfProject(projectTitle)));
-    document.getElementById(`${projectTitle}-identifier`).classList.add('active'); // sets inbox as active
-    createEventListeners();
+         //  display
+        mainContentContainer.appendChild(createProjectDisplayElem(projectTitle, taskList.getTasksOfProject(projectTitle)));
+        document.getElementById(`${projectTitle}-identifier`).classList.add('active'); // sets inbox as active
+        createEventListeners();
+    }else{
+        //  sidebar
+        mainContentContainer.appendChild(createSidebarElem(projectsList.filter((projectTitle) => projectTitle != 'Inbox')));
+        //  display
+        mainContentContainer.appendChild(createProjectDisplayElem(projectTitle, taskList.getTasksOfProject(projectTitle)));
+        document.getElementById(`${projectTitle}-identifier`).classList.add('active'); // sets inbox as active
+        createEventListeners();
+    }
 }
 
 
@@ -182,13 +196,26 @@ displayProject(mainContentElem, 'Inbox');
 CONTENT_ELEM.appendChild(createFooterElem());
 
 
-// modal to add project
+// ----------
+// FORM LOGIC
+// ----------
 
-// modal
-const modal = document.querySelector('[data-modal]');
+document.querySelector('form').addEventListener('submit', (e) => {
+    e.preventDefault();
 
-const closeButton = document.createElement('button');
-closeButton.type = "submit";
-closeButton.textContent = "Cancel";
-closeButton.addEventListener("click", () => modal.close());
-document.querySelector('form').appendChild(closeButton);
+    const taskName = document.getElementById('task-name').value;
+    const taskDesc = document.getElementById('task-description').value;
+    const date = new Date(document.getElementById('due-date').value);
+    const checkbox = document.getElementById('checkbox').checked;
+    
+    const activeProject = document.querySelector('.displayed-content').querySelector('h1').textContent;
+    
+    const newTask = Task(taskName, taskDesc, date, checkbox);
+    newTask.addProject(activeProject);
+
+    taskList.addTask(newTask);
+
+    document.querySelector('form').reset();
+    modal.close();
+    displayProject(mainContentElem, activeProject);
+});

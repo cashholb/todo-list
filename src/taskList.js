@@ -1,3 +1,5 @@
+import isToday from 'date-fns/isToday'
+import isThisWeek from 'date-fns/isThisWeek'
 
 const TaskList = () => {
 
@@ -25,14 +27,35 @@ const TaskList = () => {
     }
     
     const getTasksOfProject = (projectTitle) => {
-    
+
         let tasksOfProject = [];
-        tasks.forEach((task) => {
-            if(task.getProjects().includes(projectTitle)) {
-                tasksOfProject.push(task);
-            }
-        });
+        if(projectTitle != 'Today' && projectTitle != 'This Week'){
+            tasks.forEach((task) => {
+                if(task.getProjects().includes(projectTitle)) {
+                    tasksOfProject.push(task);
+                }
+            });
+        }else{
+            switch(projectTitle) {
+                case 'Today': 
     
+                    tasks.forEach((task) => {
+                        if(isToday(task.date)){
+                            tasksOfProject.push(task);
+                        }
+                    })
+                    break;
+
+                case 'This Week':
+                    tasks.forEach((task) => {
+                        if(isThisWeek(task.date)){
+                            tasksOfProject.push(task);
+                        }
+                    })
+                    break;
+            }
+        }
+        
         return tasksOfProject;
     }
 

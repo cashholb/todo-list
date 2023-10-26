@@ -9,6 +9,8 @@ import uncheckedButton from "./assets/icons/radio_button_unchecked_FILL0_wght400
 import checkedButton from "./assets/icons/check_circle_FILL0_wght400_GRAD0_opsz24.svg"
 import githubLogo from "./assets/icons/github-mark-white.svg"
 import closeIcon from "./assets/icons/close_FILL0_wght400_GRAD0_opsz24.svg"
+import starIcon from "./assets/icons/star_FILL0_wght400_GRAD0_opsz24.svg"
+import starIconFilled from "./assets/icons/star-fill.svg"
 
 const applicationName = 'Todo List App';
 
@@ -58,7 +60,14 @@ const projectDisplayConfig = {
     detailsButtonText: "DETAILS",
     uncheckedButton: icon(uncheckedButton,'task in progress icon'),
     checkedButton: icon(checkedButton, 'task finished icon'),
+    priorityIconUnfilled: icon(starIcon, 'low priority'),
+    priorityIconFilled: icon(starIconFilled, 'high priority'),
+
     deleteButton: icon(deleteIcon, 'delete icon'),
+    addItemButton: {
+        icon: icon(addIcon, 'add new item'),
+        title: 'Add Task'
+    },
 };
 
 const footer = {

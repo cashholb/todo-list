@@ -24,27 +24,6 @@ const createSidebarElem = (projectsList) => {
 
     const sidebarElem = document.createElement('div');
     sidebarElem.classList.add('sidebar');
-
-
-
-    // DEFAULT PROJECT
-
-    const createSidebarItemElem = (title, iconSrc, iconAlt) => {
-        const sidebarItem = document.createElement('button');
-        sidebarItem.classList.add('sidebar-item');
-
-        const icon = document.createElement('img');
-        icon.src = iconSrc;
-        icon.alt = iconAlt;
-        sidebarItem.appendChild(icon);
-
-        const itemTitle = document.createElement('p');
-        itemTitle.textContent = title;
-        sidebarItem.appendChild(itemTitle);
-
-        return sidebarItem
-    }
-
     
 
     // default items (Inbox, Today, etc.)
@@ -164,27 +143,35 @@ const createProjectDisplayElem = (projectTitle, taskList) => {
     for (const task of taskList) {
         const itemElem = document.createElement('div');
         itemElem.classList.add('displayed-task');
+        itemElem.id = task.title;
 
         const leftSide = document.createElement('div');
         leftSide.classList.add('left');
 
         const statusButton = document.createElement('button');
         const statusImg = document.createElement('img');
+
+        const taskTitle = document.createElement('button');
+        taskTitle.classList.add('task-title');
+
         if(task.checked) {
             statusImg.src = projectDisplayConfig.checkedButton.src;
             statusImg.alt = projectDisplayConfig.checkedButton.alt;
+
+            taskTitle.innerHTML = task.title.strike();
         }else{
             statusImg.src = projectDisplayConfig.uncheckedButton.src;
             statusImg.alt = projectDisplayConfig.uncheckedButton.alt;
+            taskTitle.textContent = task.title;
+
         }
         statusButton.appendChild(statusImg);
         
         statusButton.classList.add('status-button');
         leftSide.appendChild(statusButton);
 
-        const taskTitle = document.createElement('button');
-        taskTitle.classList.add('task-title');
-        taskTitle.textContent = task.title;
+        
+        
         leftSide.appendChild(taskTitle);
 
         itemElem.appendChild(leftSide);
@@ -192,10 +179,20 @@ const createProjectDisplayElem = (projectTitle, taskList) => {
         const rightSide = document.createElement('div');
         rightSide.classList.add('right');
 
-        const detailsButton = document.createElement('button');
-        detailsButton.classList.add('details-button');
-        detailsButton.textContent = projectDisplayConfig.detailsButtonText;
-        rightSide.appendChild(detailsButton);
+        const priorityButton = document.createElement('button');
+        priorityButton.classList.add('priority-button');
+        const priorityButtonImg = document.createElement('img');
+        if(task.priority) {
+            priorityButtonImg.src = projectDisplayConfig.priorityIconFilled.src;
+            priorityButtonImg.alt = projectDisplayConfig.priorityIconFilled.alt;
+        }else{
+            priorityButtonImg.src = projectDisplayConfig.priorityIconUnfilled.src;
+            priorityButtonImg.alt = projectDisplayConfig.priorityIconUnfilled.alt;
+        }
+        
+        priorityButton.appendChild(priorityButtonImg);
+
+        rightSide.appendChild(priorityButton);
 
         const dateButton = document.createElement('button');
         dateButton.classList.add('date-button');
@@ -215,7 +212,27 @@ const createProjectDisplayElem = (projectTitle, taskList) => {
         projectDisplayList.appendChild(itemElem);
     }
 
+    const addTask = document.createElement('button');
+    addTask.classList.add('displayed-task');
+    addTask.classList.add('add-task');
+    addTask.id = 'add-task';
 
+    const leftSide = document.createElement('div');
+    leftSide.classList.add('left');
+    addTask.appendChild(leftSide);
+
+    const addTaskIcon = document.createElement('img');
+    addTaskIcon.src = projectDisplayConfig.addItemButton.icon.src;
+    addTaskIcon.alt = projectDisplayConfig.addItemButton.icon.alt;
+    leftSide.appendChild(addTaskIcon);
+    
+    const addTaskText = document.createElement('p');
+    addTaskText.textContent = projectDisplayConfig.addItemButton.title;
+    leftSide.appendChild(addTaskText);
+
+    projectDisplayList.appendChild(addTask);
+
+    
 
     projectDisplayElem.appendChild(projectDisplayList);
 
@@ -260,14 +277,14 @@ const addProjectElem = () => {
     buttonContainer.classList.add('project-popup-button-container');
     
     const addButton = document.createElement('button');
-    addButton.classList.add('input-button');
+    addButton.classList.add('submit-button');
     addButton.classList.add('add-button');
     addButton.textContent = 'Add';
     addButton.id = 'project-popup-add-button'
     buttonContainer.appendChild(addButton);
 
     const cancelButton = document.createElement('button');
-    cancelButton.classList.add('input-button');
+    cancelButton.classList.add('submit-button');
     cancelButton.classList.add('cancel-button');
     cancelButton.id = 'project-popup-cancel-button'
     cancelButton.textContent = 'Cancel';

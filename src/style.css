@@ -159,23 +159,24 @@ button {
         gap: 20px;
         text-align: center;
 
-        > .input-button{
-            width: 100%;
-            border: 0.5px solid rgb(173, 173, 173);
-            border-radius: 5px;
-            padding: 10px 25px;
-            font-size: 1.2rem;
-        }
-
-        > .add-button {
-            background-color: rgb(149, 223, 149);
-        }
-
-        > .cancel-button {
-            background-color: rgb(250, 170, 170);
-
-        }
+        
     }
+}
+
+.submit-button{
+    width: 100%;
+    border: 0.5px solid rgb(173, 173, 173);
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-size: 1.2rem;
+}
+
+.add-button {
+    background-color: rgb(149, 223, 149);
+}
+
+.cancel-button {
+    background-color: rgb(250, 170, 170);
 }
 
 .add-project-default.active {
@@ -199,10 +200,11 @@ button {
 .project-display-list {
     display: flex;
     flex-direction: column;
-    gap: 25px;
 }
 
 .displayed-task {
+    padding: 10px;
+    border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -212,6 +214,16 @@ button {
         display: flex;
         gap: 15px;
     }
+}
+
+.displayed-task:hover{
+    background-color: rgb(216, 216, 216);
+}
+
+
+.add-task {
+    font-size: large;
+    padding: 0px 11px;
 }
 
 
@@ -232,3 +244,65 @@ button {
     height: 35px;
     width: 35px;
 }
+
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 10px;
+    
+    grid-template-areas: 
+    "header header"
+    "name name-input"
+    "desc desc-input"
+    "date date"
+    "urgency urgency"
+    "submit cancel";
+}
+
+.form-title {
+    grid-area: header;
+}
+
+#task-name-title {
+    grid-area: name;
+}
+#task-name {
+    grid-area: name-input;
+}
+
+#task-description-title {
+    grid-area: desc;
+}
+
+#task-description {
+    grid-area: desc-input;
+}
+
+.due-date{
+    grid-area: date;
+}
+
+.checkbox{
+    grid-area: urgency;
+}
+
+.due-date,
+.checkbox,
+.form-title {
+    justify-self: center;
+}
+
+.add-button {
+    grid-area: submit;
+    margin-right: 5px;
+}
+
+.cancel-button {
+    grid-area: cancel;
+    margin-left: 5px;
+}
+
+
+
+
