@@ -1,5 +1,5 @@
 
-const Task = (title, description, date, priority) => {
+const Task = (title, description, date, priority, checked) => {
 
     let projects = ['Inbox'];
 
@@ -11,7 +11,7 @@ const Task = (title, description, date, priority) => {
         getProjects,
         addProject,
         removeProject,
-        checked: false,
+        checked: checked,
         title: title,
         description: description,
         date: date,

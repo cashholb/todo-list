@@ -1,66 +1,76 @@
-import { Project } from "./project";
 import { Task } from "./task";
+import { TaskList } from "./taskList";
 
 // fetch local storage
 
 // temp fetch of project storage
 
 const demoProjectList = () => {
-    const task_pickUpClothes = Task(
+    let taskList = TaskList();
+
+    // TEMP local-storage tasks
+    taskList.addTask(Task(
         'pick up clothes',
         'use your hands, toss them in the wash',
-        '5/10/24',
-        'low',
-    );
-    
-    const task_organizeDresser = Task(
+        new Date("2023-10-30"),
+        true,
+    ));
+
+    taskList.addTask(Task(
         'organize dresser',
         'throw out junk from junk drawer',
-        '5/15/24',
-        'medium',
-    );
-    
-    let projectsList = [];
-    
-    const proj_cleanRoom = Project('Clean Room');
-    proj_cleanRoom.addTask(task_pickUpClothes);
-    proj_cleanRoom.addTask(task_organizeDresser);
-    projectsList.push(proj_cleanRoom);
-    
-    const project_touchGrass = Project('Touch Grass');
-    projectsList.push(project_touchGrass);
+        new Date(),
+        false,
+    ));
 
-    return projectsList;
+    taskList.addTask(Task(
+        'just for inbox',
+        'this is a desc',
+        new Date(),
+        true,
+    ));
+
+
+    taskList.findTask('pick up clothes').addProject('Clean Room');
+    taskList.findTask('organize dresser').addProject('Clean Room');
+
+
+    return taskList;
 }
 
 // --------------------
 // load project storage
 // --------------------
 
-const loadedProjectList = (projectsList) => {
+const loadLocalStorage = () => {
+    
+    let taskList = TaskList();
 
-    // load inbox
-    const inboxProj = Project()
+    const loadedTaskList = JSON.parse(localStorage.getItem('taskList'));
+    loadedTaskList.forEach((task) => {
+        const loadedTask = Task(task.title, task.description, new Date(task.date), task.priority, task.checked);
+        task.projects.forEach((project) => {
+            loadedTask.addProject(project);
+        })
+        taskList.addTask(loadedTask);
+    });
 
-    // load today
-
-    // load this week
-
-    // load each project
-
-
-    return projectsList;
+    console.log(taskList.getTasks());
+    return taskList;
 }
 
-const addProject = (projectList, project) => {
-    projectList.push(project);
-    return projectList;
+const setTaskListInLocalStorage = (taskList) => {
+
+    localStorage.clear();
+
+    let jsonTaskList = [];
+
+    taskList.getTasks().forEach((task) => {
+        const jsonTask = ({title: task.title, description: task.description, date: task.date, priority: task.priority, checked: task.checked, projects: task.getProjects()});
+        jsonTaskList.push(jsonTask);
+    });
+    
+    localStorage.setItem('taskList', JSON.stringify(jsonTaskList));
 }
 
-const addTask = (task, project) => {
-    project.addTask(task);
-    return project;
-}
-
-
-export {demoProjectList, addProject, addTask};
+export {demoProjectList, loadLocalStorage, setTaskListInLocalStorage};

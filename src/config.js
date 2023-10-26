@@ -62,7 +62,6 @@ const projectDisplayConfig = {
     checkedButton: icon(checkedButton, 'task finished icon'),
     priorityIconUnfilled: icon(starIcon, 'low priority'),
     priorityIconFilled: icon(starIconFilled, 'high priority'),
-
     deleteButton: icon(deleteIcon, 'delete icon'),
     addItemButton: {
         icon: icon(addIcon, 'add new item'),

@@ -2,13 +2,10 @@
 import './style.css';
 
 import { Task } from "./task";
-import { Project } from './project';
 import { TaskList } from './taskList';
 
-import { defaultSidebar, projectsSidebar, icon, sideBarItem, projectDisplay} from "./config";
 import { createHeaderElem, createSidebarElem, createProjectDisplayElem, createFooterElem} from "./content";
-import { demoProjectList, addProject, addTask } from './localStorage';
-import { createProjectList } from './projectList';
+import {loadLocalStorage, setTaskListInLocalStorage} from './localStorage';
 
 const MAX_DATE = new Date(8640000000000000);
 
@@ -23,33 +20,7 @@ const modal = document.querySelector('[data-modal]');
 document.getElementById('cancel-add-task').addEventListener("click", () => modal.close());
 
 let taskList = TaskList();
-
-// TEMP local-storage tasks
-taskList.addTask(Task(
-    'pick up clothes',
-    'use your hands, toss them in the wash',
-    new Date("2023-10-30"),
-    true,
-));
-
-taskList.addTask(Task(
-    'organize dresser',
-    'throw out junk from junk drawer',
-    new Date(),
-    false,
-));
-
-taskList.addTask(Task(
-    'just for inbox',
-    'this is a desc',
-    new Date(),
-    true,
-));
-
-
-taskList.findTask('pick up clothes').addProject('Clean Room');
-taskList.findTask('organize dresser').addProject('Clean Room');
-
+taskList = loadLocalStorage();
 let projectsList = taskList.buildProjectList();
 
 // --------------
@@ -78,6 +49,7 @@ const createEventListeners = () => {
 
     // popup-add-button
     document.getElementById('project-popup-add-button').addEventListener('click', () => {
+
         const textVal = document.getElementById('project-popup-input').value;
 
         // error handling
@@ -101,15 +73,12 @@ const createEventListeners = () => {
         e.stopPropagation();
 
         const projectTitle = project.id;
-    
         projectsList = projectsList.filter((p) => p != projectTitle);
     
-        // TODO: remove project from any tasks
-    
-        // TODO: reset main content
+        // remove project from all tasks
+        taskList.getTasks().forEach((task) => task.removeProject(projectTitle));
 
         displayProject(mainContentElem, 'Inbox');
-
     }));
 
     // -------
@@ -155,6 +124,7 @@ const createEventListeners = () => {
 // ---------------------------------
 
 const displayProject = (mainContentContainer, projectTitle) => {
+    setTaskListInLocalStorage(taskList);
     mainContentContainer.innerHTML = "";
 
     
@@ -226,7 +196,7 @@ document.querySelector('form').addEventListener('submit', (e) => {
     
     const activeProject = document.querySelector('.displayed-content').querySelector('h1').textContent;
     
-    const newTask = Task(taskName, taskDesc, date, checkbox);
+    const newTask = Task(taskName, taskDesc, date, checkbox, false);
     newTask.addProject(activeProject);
 
     taskList.addTask(newTask);
