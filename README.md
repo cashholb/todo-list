@@ -7,7 +7,7 @@ Live Demo: [cashholb.github.io/todo-list](https://cashholb.github.io/todo-list/)
 - add tasks
 - remove tasks
 - create categories as <i>projects</i>
-- responsive design (mobile friendly)
+- responsive design to suite smaller screen sizes
 - local storage saves your tasks
 
 ## Technologies
