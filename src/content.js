@@ -170,7 +170,6 @@ const createProjectDisplayElem = (projectTitle, taskList) => {
             statusImg.src = projectDisplayConfig.uncheckedButton.src;
             statusImg.alt = projectDisplayConfig.uncheckedButton.alt;
             taskTitle.textContent = task.title;
-
         }
         statusButton.appendChild(statusImg);
         
